@@ -1,15 +1,22 @@
 'use strict'
 /* global fetch */
-
+const rp = require('request-promise');
 const baseUrl = 'https://min-api.cryptocompare.com/data/'
 
 function fetchJSON (url) {
-  return fetch(url)
-    .then(res => res.json())
-    .then(body => {
-      if (body.Response === 'Error') throw body.Message
-      return body
-    })
+  return rp({
+    uri: url,
+    json: true
+  })
+  .then(body => {
+    if (body.Response === 'Error') throw body.Message
+    return body
+  })
+}
+
+function exchangeList () {
+  const url = `${baseUrl}all/exchanges`
+  return fetchJSON(url)
 }
 
 function coinList () {
@@ -114,6 +121,7 @@ function dateToTimestamp (date) {
 
 module.exports = {
   coinList,
+  exchangeList,
   price,
   priceMulti,
   priceFull,

@@ -30,5 +30,9 @@
     "lint": "standard",
     "test": "npm run lint && npm run unit",
     "unit": "tape test/*.js | tap-spec"
+  },
+  "dependencies": {
+    "request": "^2.83.0",
+    "request-promise": "^4.2.2"
   }
 }
