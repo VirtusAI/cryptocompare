@@ -17,22 +17,18 @@ cryptocompare
 Install
 -------
 
-    npm install --save cryptocompare
+    npm install --save "git+https://github.com/VirtusAI/cryptocompare.git"
 
 
 Usage
 -----
 
-**Note:** cryptocompare depends on [`fetch()`](https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/fetch) being defined globally.
+This fork uses nodeJS' request library instead of the original fetch. Just require as a module
 
-- If you are using this in electron, it should work without any configuration.
-- If you are using this in Node.js, you will need to use [`node-fetch`](https://www.npmjs.com/package/node-fetch).
-
-  **Example:**
-  ```js
-  global.fetch = require('node-fetch')
-  const cc = require('cryptocompare')
-  ```
+**Example:**
+```js
+const cc = require('cryptocompare')
+```
 
 ### Methods
 
@@ -91,6 +87,37 @@ cc.coinList()
   //    Sponsored: false
   // },
   //   ETH: {...},
+  // }
+})
+.catch(console.error)
+```
+
+### `exchangeList()`
+
+Returns all the exchanges that CryptoCompare has integrated with.
+
+`exchangeList()`
+
+- `No parameters`
+- `Returns` (Object)
+
+```js
+const cc = require('cryptocompare')
+
+// Usage:
+cc.exchangeList()
+.then(exchangeList => {
+  console.log(exchangeList)
+  // {
+  //   "Cryptsy":
+  //   {
+  //     "42":["BTC","XRP"],
+  //     "EMC2":["BTC","XRP"],
+  //     "POINTS":["BTC"],
+  //     "VTC":["BTC","LTC","XRP"]
+  //     ...
+  //   }
+  //   ...
   // }
 })
 .catch(console.error)
