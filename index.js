@@ -16,7 +16,11 @@ function fetchJSON (url) {
 
 function exchangeList () {
   const url = `${baseUrl}all/exchanges`
-  return fetchJSON(url)
+  return fetchJSON(url).then(exchanges => {
+    for(k in exchanges) {
+      exchanges[k.toUpperCase] = exchanges[k];
+    }
+  });
 }
 
 function coinList () {
