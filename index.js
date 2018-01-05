@@ -26,7 +26,7 @@ function exchangeList () {
 
 function coinList () {
   const url = `${baseUrl}all/coinlist`
-  return fetchJSON(url).then(result => result.DATA);
+  return fetchJSON(url).then(result => result.Data);
 }
 
 function price (fsym, tsyms, options) {
