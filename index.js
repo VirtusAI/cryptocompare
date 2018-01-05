@@ -20,6 +20,7 @@ function exchangeList () {
     for(k in exchanges) {
       exchanges[k.toUpperCase] = exchanges[k];
     }
+    return exchanges
   });
 }
 
