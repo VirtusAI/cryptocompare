@@ -3,6 +3,32 @@
 const rp = require('request-promise');
 const baseUrl = 'https://min-api.cryptocompare.com/data/'
 
+const cmc2cc = {
+    "bytom": "BTM*",
+    "bitgem": "BTG*",
+    "batcoin": "BAT*",
+    "kingn-coin": "KNC*",
+    "rcoin": "RCN*",
+    "nimiq": "NET*",
+    "encryptotel-eth": "ETT*",
+    "dao-casino": "BET*",
+    "prochain": "PRO*",
+    "thegcccoin": "GCC*",
+    "bitcoin-silver": "BTCS*",
+    "arcade-token": "ARC*",
+    "accelerator-network": "ACC*",
+    "huncoin": "HNC*",
+    "cybermiles": "CMT*",
+    "cash-poker-pro": "CASH*",
+    "mantracoin": "MNC*",
+    "international-diamond": "XID*",
+    "qbao": "QBT*",
+    "iconomi": "ICN",
+    "iota": "MIOTA"
+}
+
+const convert = (cmcId, symbol) => cmcId in cmc2cc ? cmc2cc[cmcId] : symbol;
+
 function fetchJSON (url) {
   return rp({
     uri: url,
@@ -39,11 +65,11 @@ function coinList () {
 function coinListMergeCoinMarketCap () {
   return getCoinMarketCapCoinList()
   .then(cmcList => {
-    return coinlist()
+    return coinList()
     .then(ccList => {
       ccList = Object.keys(ccList).map(k => ccList[k]);
-      for(cc of ccList) {
-        for(cmc of cmcList) {
+      for(let cc of ccList) {
+        for(let cmc of cmcList) {
             if(cc.Name === convert(cmc.id, cmc.symbol)) {
                 cc.cmcId = cmc.id;
                 cc.cmcRank = cmc.rank
