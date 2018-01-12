@@ -14,6 +14,13 @@ function fetchJSON (url) {
   })
 }
 
+function getCoinMarketCapCoinList() {
+  return rp({
+    uri: 'https://api.coinmarketcap.com/v1/ticker?limit=0',
+    json: true
+  });
+}
+
 function exchangeList () {
   const url = `${baseUrl}all/exchanges`
   return fetchJSON(url).then(exchanges => {
@@ -27,6 +34,26 @@ function exchangeList () {
 function coinList () {
   const url = `${baseUrl}all/coinlist`
   return fetchJSON(url).then(result => result.Data);
+}
+
+function coinListMergeCoinMarketCap () {
+  return getCoinMarketCapCoinList()
+  .then(cmcList => {
+    return coinlist()
+    .then(ccList => {
+      ccList = Object.keys(ccList).map(k => ccList[k]);
+      for(cc of ccList) {
+        for(cmc of cmcList) {
+            if(cc.Name === convert(cmc.id, cmc.symbol)) {
+                cc.cmcId = cmc.id;
+                cc.cmcRank = cmc.rank
+                break;
+            }
+        }
+      }
+      return ccList.filter(cc => 'cmcId' in cc).sort((a,b) => parseInt(a.cmcRank) - parseInt(b.cmcRank));
+    })
+  })
 }
 
 function price (fsym, tsyms, options) {
@@ -136,5 +163,6 @@ module.exports = {
   topExchanges,
   histoDay,
   histoHour,
-  histoMinute
+  histoMinute,
+  coinListMergeCoinMarketCap
 }
