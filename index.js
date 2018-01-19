@@ -1,6 +1,6 @@
 'use strict'
 /* global fetch */
-const rp = require('request-promise');
+const rp = require('request-promise-cache');
 const baseUrl = 'https://min-api.cryptocompare.com/data/'
 
 const cmc2cc = {
@@ -29,14 +29,20 @@ const cmc2cc = {
 
 const convert = (cmcId, symbol) => cmcId in cmc2cc ? cmc2cc[cmcId] : symbol;
 
-function fetchJSON (url) {
+const HOUR = 1000 * 60 * 60;
+const DAY = HOUR * 24;
+const WEEK = DAY * 7;
+
+function fetchJSON (url, cacheTime=DAY) {
   return rp({
     uri: url,
-    json: true
+    json: true,
+    cacheKey: url,
+    cacheTTL: DAY,
   })
-  .then(body => {
-    if (body.Response === 'Error') throw body.Message
-    return body
+  .then(data => {
+    if (data.body.Response === 'Error') throw data.body.Message
+    return data.body
   })
 }
 
@@ -59,7 +65,7 @@ function exchangeList () {
 
 function coinList () {
   const url = `${baseUrl}all/coinlist`
-  return fetchJSON(url).then(result => result.Data);
+  return fetchJSON(url, WEEK).then(result => result.Data);
 }
 
 function coinListMergeCoinMarketCap () {
@@ -114,7 +120,7 @@ function priceHistorical (fsym, tsyms, time, options) {
   if (options.exchanges) url += `&e=${options.exchanges}`
   if (options.tryConversion === false) url += '&tryConversion=false'
   // The API returns json with an extra layer of nesting, so remove it
-  return fetchJSON(url).then(result => result[fsym])
+  return fetchJSON(url, WEEK).then(result => result[fsym])
 }
 
 function generateAvg (fsym, tsym, e, tryConversion) {

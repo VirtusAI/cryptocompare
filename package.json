@@ -32,7 +32,9 @@
     "unit": "tape test/*.js | tap-spec"
   },
   "dependencies": {
+    "nano-cache": "^1.1.1",
     "request": "^2.83.0",
-    "request-promise": "^4.2.2"
+    "request-promise": "^4.2.2",
+    "request-promise-cache": "^1.0.6"
   }
 }
