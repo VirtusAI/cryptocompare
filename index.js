@@ -47,10 +47,14 @@ function fetchJSON (url, cacheTime=DAY) {
 }
 
 function getCoinMarketCapCoinList() {
+  let url = 'https://api.coinmarketcap.com/v1/ticker?limit=0';
   return rp({
-    uri: 'https://api.coinmarketcap.com/v1/ticker?limit=0',
-    json: true
-  });
+    uri: url,
+    json: true,
+    cacheKey: url,
+    cacheTTL: DAY,
+  })
+  .then(data => data.body);
 }
 
 function exchangeList () {
