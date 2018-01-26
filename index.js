@@ -24,7 +24,7 @@ const cmc2cc = {
     "international-diamond": "XID*",
     "qbao": "QBT*",
     "iconomi": "ICN",
-    "iota": "MIOTA"
+    "iota": "IOT"
 }
 
 const convert = (cmcId, symbol) => cmcId in cmc2cc ? cmc2cc[cmcId] : symbol;
