@@ -71,8 +71,6 @@ function exchangeList (capitalize=true) {
   });
 }
 
-exchangeList().then(l => console.log(l));
-
 function coinList () {
   const url = `${baseUrl}all/coinlist`
   return fetchJSON(url, WEEK).then(result => result.Data);
