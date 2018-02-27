@@ -60,6 +60,9 @@ function getCoinMarketCapCoinList() {
 function exchangeList () {
   const url = `${baseUrl}all/exchanges`
   return fetchJSON(url).then(exchanges => {
+    // copy paste Coinbase to Gdax
+    exchanges['Gdax'] = exchanges['Coinbase'];
+
     for(let k in exchanges) {
       exchanges[k.toUpperCase()] = exchanges[k];
     }
