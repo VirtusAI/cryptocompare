@@ -57,18 +57,21 @@ function getCoinMarketCapCoinList() {
   .then(data => data.body);
 }
 
-function exchangeList () {
+function exchangeList (capitalize=true) {
   const url = `${baseUrl}all/exchanges`
   return fetchJSON(url).then(exchanges => {
     // copy paste Coinbase to Gdax
     exchanges['Gdax'] = exchanges['Coinbase'];
 
-    for(let k in exchanges) {
-      exchanges[k.toUpperCase()] = exchanges[k];
-    }
+    if(capitalize)
+      for(let k in exchanges)
+        exchanges[k.toUpperCase()] = exchanges[k];
+
     return exchanges
   });
 }
+
+exchangeList().then(l => console.log(l));
 
 function coinList () {
   const url = `${baseUrl}all/coinlist`
