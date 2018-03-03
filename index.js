@@ -218,6 +218,7 @@ module.exports = {
   topExchanges,
   histoDay,
   histoHour,
+  histoHour2,
   histoMinute,
   coinListMergeCoinMarketCap
 }
